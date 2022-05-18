@@ -102,7 +102,39 @@
 				"enablePullDownRefresh": false
 		    }
 		    
+		},{
+			"path": "pages/inform",
+			"style": {
+				"app-plus": {
+					//去掉原生导航栏
+					"titleNView": false
+				},
+				"navigationBarTextStyle": "black"
+			}
+		}, {
+			"path": "pages/addInform",
+			"style": {
+				"navigationBarTitleText": "添加请假"
+			}
+		}, {
+			"path": "pages/viewInform",
+			"style": {
+				"app-plus": {
+					//去掉原生导航栏
+					"titleNView": false
+				},
+				"navigationBarTextStyle": "black"
+			}
 		}
+        ,{
+            "path" : "pages/viewLeaves",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

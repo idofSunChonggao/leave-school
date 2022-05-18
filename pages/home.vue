@@ -27,10 +27,10 @@
 						cuIcon: 'formfill'
 					},
 					{
-						title: '聊天',
-						name: 'chat',
+						title: '报备',
+						name: 'inform',
 						color: 'orange',
-						cuIcon: 'communityfill'
+						cuIcon: 'check'
 						},
 				],
 					

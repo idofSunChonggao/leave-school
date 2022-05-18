@@ -89,8 +89,9 @@
 						<view>请假原因：</view><text>{{leave.reason}}</text><br>
 						<view class="main-content-info-left-file" style="width: 100%;" v-if="leave.imgFile != ''"><text style="color: #9EA8B4;">附件：</text><image :src="leave.imgFile" @click="imgFileClick"></image></view><br v-if="leave.imgFile != ''">
 						<view style="main-content-info-left-file">发起位置：</view><text style="color: #2C8CF0;">{{leave.address}}</text><br>
-						<view>抄送人：</view><text>{{leave.cc}}</text><br>
-						<view style="color:#F79A0D;width: 100%;">本人承诺填写的信息真实有效，并对本次提交请假申请的信息真实性负责。</view>
+						<view>目的地：</view><text>福建省/厦门市/集美区/万科云城</text><br>
+						<view>宿舍信息：</view><text>—</text><br>
+						<view style="color:#F79A0D;width: 100%;">本人承诺填写的信息真实有效，对本次提交请假申请的信息真实性负责；并严格遵守"两点一线"等防控要求，按时返校，自觉做好个人防护。</view>
 					</view>
 				</view>
 
@@ -102,41 +103,11 @@
 							<view class="main-content-checkState-cirBlue">
 								<view></view>
 							</view>
-							<view style="position: relative;top: -3px;left: 20rpx;">{{leave.name}} - 发起申请</view>
+							<view style="position: relative;top: -3px;left: 20rpx;">{{leave.name}} - 发起申请<text style="color: #00CA76;"> — 系统已自动通过</text></view>
 							<view style="position: absolute;top: -3px;right: 0px;color: #9FA7B4;">{{leave.applyDate}}</view>
 						</view>
 						
-						<view class="main-content-checkState-state-checkOne">
-							<view class="main-content-checkState-cirGreen" style="position: absolute;top: 0px;">
-								<view></view>
-							</view>
-							<view style="display: inline-block;position: relative;left: 60rpx;width: 72%;">
-								<text>一级：[{{leave.oneCheckStatus}}]{{leave.oneCheck}} - 审批<text style="color: #00CA76;">通过</text></text>
-							</view>
-							<view style="position: absolute;top: -6rpx;right: 0px;color: #9FA7B4;">{{leave.oneCheckDate}}</view>
-							<view class="main-content-checkState-checkInfo">审批意见：{{leave.oneCheckIdea}}</view>
-						</view>
-						
-						<view class="main-content-checkState-state-checkTwo" v-if="leave.twoCheck != ''">
-							<view class="main-content-checkState-cirGreen" style="position: absolute;top: 0px;">
-								<view></view>
-							</view>
-							<view style="display: inline-block;position: relative;left: 60rpx;width: 72%;">
-								<text>二级：[{{leave.twoCheckStatus}}]{{leave.twoCheck}} - 审批<text style="color: #00CA76;">通过</text></text>
-							</view><br>
-							<view style="position: absolute;top: -6rpx;right: 0px;color: #9FA7B4;">{{leave.twoCheckDate}}</view>
-							<view class="main-content-checkState-checkInfo">审批意见：{{leave.twoCheckIdea}}</view>
-						</view>
-						<view class="main-content-checkState-state-checkThree" v-if="leave.threeCheck != ''">
-							<view class="main-content-checkState-cirGreen" style="position: absolute;top: 0px;">
-								<view></view>
-							</view>
-							<view style="display: inline-block;position: relative;left: 60rpx;width: 72%;">
-								<text>三级：[{{leave.threeCheckStatus}}]{{leave.threeCheck}} - 审批<text style="color: #00CA76;">通过</text></text>
-							</view><br>
-							<view style="position: absolute;top: -6rpx;right: 0px;color: #9FA7B4;color: #9FA7B4;">{{leave.twoCheckDate}}</view>
-							<view class="main-content-checkState-checkInfo">审批意见：{{leave.threeCheckIdea}}</view>
-						</view>
+	
 						
 						<view class="main-content-checkState-state-apply" style="margin-top: 10px;" v-if="leave.state == '已完成'">
 							<view class="main-content-checkState-cirBlue">
@@ -158,8 +129,7 @@
 				<!-- <view class="main-content-applyLeave" v-if="leave.state == '正在休假中'">申请续假</view> -->
 				<view class="main-content-share-clear" v-if="leave.state == '已完成'">转发</view>
 				<view class="main-content-bottom-btn" v-if="leave.state == '正在休假中'">
-					<view>转发</view>
-					<view @click="extend">申请续假</view>
+					<view @click="extend">转发</view>
 					<view style="background-color: #3399FE;color: white;" @click="clear">去销假</view>
 				</view>
 			</view>
@@ -200,7 +170,7 @@
 			}
 			var that = this;
 			this.refreshCurrDate();
-			this.leave = uni.getStorageSync("currLeaves");
+			this.leave = uni.getStorageSync("currInforms");
 			this.index = uni.getStorageSync("currIndex");
 			setInterval(function() {
 				that.refreshCurrDate();
@@ -260,14 +230,14 @@
 					success:function(e){
 						if(e.confirm){
 							var date = new Date();
-							that.leaves = uni.getStorageSync('todaySchoolLeaves').reverse();
+							that.leaves = uni.getStorageSync('todaySchoolInforms').reverse();
 							that.leave.state = '已完成';
 							that.leave['clearDate'] = (Number(date.getMonth() + 1).toString().length <= 1 ? "0" + Number(date.getMonth() + 1) : Number(date.getMonth() + 1)) + "-" + 
 								(date.getDate().toString().length <= 1 ? "0" + date.getDate() : date.getDate()) + " " + 
 								(date.getHours().toString().length <= 1 ? "0" + date.getHours() : date.getHours()) + ":" + 
 								(date.getMinutes().toString().length <= 1 ? "0" + date.getMinutes() : date.getMinutes());
 							that.leaves[that.index] = that.leave;
-							uni.setStorageSync('todaySchoolLeaves',that.leaves.reverse());
+							uni.setStorageSync('todaySchoolInforms',that.leaves.reverse());
 							uni.navigateBack({
 								delta:1
 							})
@@ -320,9 +290,9 @@
 							console.log(endDate);
 							that.difference(that.leave.startDate, endDate);
 							that.leave['endDate'] = endDate;
-							that.leaves = uni.getStorageSync('todaySchoolLeaves').reverse();
+							that.leaves = uni.getStorageSync('todaySchoolInforms').reverse();
 							that.leaves[that.index] = that.leave;
-							uni.setStorageSync('todaySchoolLeaves',that.leaves.reverse());
+							uni.setStorageSync('todaySchoolInforms',that.leaves.reverse());
 							uni.showToast({
 								title:'🐸：您成功续假2小时！',
 								duration:2000,
@@ -937,7 +907,7 @@
 	}
 	.main-content-bottom-btn view{
 		background-color: white;
-		width: 33%;
+		width: 50%;
 		display: inline-block;
 		border-right: 1px solid #EBEBEB;
 		border-top: 1px solid #EBEBEB;
